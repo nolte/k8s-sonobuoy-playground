@@ -50,6 +50,8 @@ tasks:
           --existing-service-account \
           --service-account-name sonobuoy-test-robot \
           --plugin {{.SONOBUOY_PLUGIN_YAML}} \
+          --plugin-env terratest.REPO_URL='https://github.com/nolte/k8s-sonobuoy-playground.git' \
+          --plugin-env terratest.REPO_TEST_PATH='src/test-examples/terratest/test' \
           --wait
 
   full: 

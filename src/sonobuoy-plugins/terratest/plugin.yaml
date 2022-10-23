@@ -4,18 +4,18 @@ podSpec:
   volumes:
   - name: cache-volume
     emptyDir: {}
-  initContainers:
-  - name: git-cloner
-    image: alpine/git
-    args:
-        - clone
-        - --single-branch
-        - --
-        - https://github.com/nolte/k8s-sonobuoy-playground.git
-        - /tmp/repo
-    volumeMounts:
-    - mountPath: /tmp/repo
-      name: cache-volume
+  # initContainers:
+  # - name: git-cloner
+  #   image: alpine/git
+  #   args:
+  #       - clone
+  #       - --single-branch
+  #       - --
+  #       - $TEST_REPO_URL
+  #       - /tmp/repo
+  #   volumeMounts:
+  #   - mountPath: /tmp/repo
+  #     name: cache-volume
 sonobuoy-config:
   driver: Job
   plugin-name: terratest
@@ -23,8 +23,8 @@ sonobuoy-config:
 spec:
   image: terratest-k8s-sonobuoy-playground:dirty
   name: plugin
-  args:
-  - src/test-examples/terratest
+  #args:
+  #- $REPO_URL REPO_TEST_PATH
   volumeMounts:
   - mountPath: /mnt/repo
     name: cache-volume  

@@ -8,6 +8,30 @@ import (
 )
 
 // An example of how to test the simple Terraform module in examples/terraform-basic-example using Terratest.
+func TestHelmDeployment(t *testing.T) {
+	t.Parallel()
+
+	expectedText := "Hello, sonobuoy!"
+
+	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: "../tf-k8s-helm",
+
+		VarFiles: []string{"sonobuoy.tfvars"},
+
+		// Disable colors in Terraform commands so its easier to parse stdout/stderr
+		NoColor: true,
+	})
+
+	defer terraform.Destroy(t, terraformOptions)
+
+	terraform.InitAndApply(t, terraformOptions)
+	actualTextExample := terraform.Output(t, terraformOptions, "hello_world")
+
+	assert.Equal(t, expectedText, actualTextExample)
+
+}
+
+// An example of how to test the simple Terraform module in examples/terraform-basic-example using Terratest.
 func TestTerraformBasicExample(t *testing.T) {
 	t.Parallel()
 

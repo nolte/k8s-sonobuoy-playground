@@ -31,6 +31,10 @@ run_test() {
   go test -v -json > ${results_dir}/report.json
 }
 
-cd /mnt/repo/$1
+env 
+
+git clone --single-branch -- ${REPO_URL} /mnt/repo
+
+cd /mnt/repo/${REPO_TEST_PATH}
 
 run_test
