@@ -1,0 +1,6 @@
+namespace: sonobuoy
+resources:
+  - ns.yaml
+  - sa.yaml
+  - roleBinding.yaml
+  - role.yaml

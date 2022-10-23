@@ -1,0 +1,24 @@
+# https://taskfile.dev
+
+version: '3'
+
+includes:
+  pytest:
+    taskfile: ./.taskfiles/sonobuoy.yml
+    vars:
+      SONOBUOY_DIR: "src/pytest"
+      DOCKER_IMAGE: "py-k8s-sonobuoy-playground:dirty"
+      SONOBUOY_PLUGIN_YAML: hello-world.yaml
+  terratest:
+    taskfile: ./.taskfiles/sonobuoy.yml
+    vars:
+      SONOBUOY_DIR: "src/terratest"
+      DOCKER_IMAGE: "terratest-k8s-sonobuoy-playground:dirty"      
+      SONOBUOY_PLUGIN_YAML: terra-test.yaml
+
+tasks:
+  default:
+    cmds:
+      - task -l
+    silent: true
+

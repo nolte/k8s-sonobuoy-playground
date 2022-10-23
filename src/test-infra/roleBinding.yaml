@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sonobuoy-test-robot
+roleRef:
+  apiGroup: ''
+  kind: Role
+  name: sonobuoy-test-robot
+subjects:
+  - apiGroup: ''
+    kind: ServiceAccount
+    name: sonobuoy-test-robot

@@ -1,0 +1,15 @@
+podSpec:
+  automountServiceAccountToken: true
+  serviceAccountName: sonobuoy-test-robot
+sonobuoy-config:
+  driver: Job
+  plugin-name: hello-world
+  result-format: junit
+spec:
+  #args:
+  #- echo hello world
+  #- kubectl cluster-info
+  #command:
+  #- ./run.sh
+  image: py-k8s-sonobuoy-playground:dirty
+  name: plugin

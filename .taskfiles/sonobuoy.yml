@@ -1,0 +1,58 @@
+version: '3'
+
+vars:
+  SONOBUOY_REPORT_DIR: /tmp/sonobuoy-results/results
+
+tasks:
+  build:
+    dir: "{{.SONOBUOY_DIR}}"
+    desc: Build the sonobuoy Container Image from {{.SONOBUOY_DIR}}
+    vars:
+      DOCKER_IMAGE: '{{default "unset:dirty" .DOCKER_IMAGE}}'    
+    cmds: 
+     - docker build -t {{.DOCKER_IMAGE}} .
+
+  kind_load:
+    dir: "{{.SONOBUOY_DIR}}"
+    desc: Load the '{{.DOCKER_IMAGE}}' Image to Local Kind Cluster
+    deps: [build]
+    vars:
+      DOCKER_IMAGE: '{{default "unset:dirty" .DOCKER_IMAGE}}'    
+    cmds: 
+     - kind load docker-image {{.DOCKER_IMAGE}}
+
+  report_clean:
+    dir: "/tmp"
+    desc: Load the Results from the Last Run
+    cmds: 
+    - rm -rf {{.SONOBUOY_REPORT_DIR}} && rm *_sonobuoy_*.tar.gz | true
+
+  report:
+    dir: "/tmp"
+    desc: Load the Results from the Last Run
+    deps: [report_clean]
+    cmds: 
+    - |
+      outfile=$(sonobuoy retrieve) \
+        && mkdir -p {{.SONOBUOY_REPORT_DIR}} \
+        && tar -xf $outfile -C {{.SONOBUOY_REPORT_DIR}}
+
+  run:
+    dir: "{{.SONOBUOY_DIR}}"
+    cmds: 
+    - |
+      sonobuoy delete --wait \
+        && kubectl apply -k ../test-infra \
+        && sonobuoy run \
+          --skip-preflight \
+          --existing-service-account \
+          --service-account-name sonobuoy-test-robot \
+          --plugin {{.SONOBUOY_PLUGIN_YAML}} \
+          --wait
+
+  full: 
+    desc: Full Run {{.SONOBUOY_PLUGIN_YAML}}
+    cmds:
+      - task: kind_load
+      - task: run
+      - task: report

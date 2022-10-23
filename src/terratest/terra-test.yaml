@@ -1,0 +1,28 @@
+podSpec:
+  automountServiceAccountToken: true
+  serviceAccountName: sonobuoy-test-robot
+  volumes:
+  - name: cache-volume
+    emptyDir: {}
+  initContainers:
+  - name: git-cloner
+    image: alpine/git
+    args:
+        - clone
+        - --single-branch
+        - --
+        - https://github.com/jmutai/hello-world-nginx.git
+        - /data
+    volumeMounts:
+    - mountPath: /tmp/cache
+      name: cache-volume
+sonobuoy-config:
+  driver: Job
+  plugin-name: terra-test
+  result-format: gojson
+spec:
+  image: terratest-k8s-sonobuoy-playground:dirty
+  name: plugin
+  volumeMounts:
+  - mountPath: /tmp/cache
+    name: cache-volume  

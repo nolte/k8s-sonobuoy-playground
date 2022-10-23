@@ -1,0 +1,17 @@
+FROM golang:1.16
+
+ARG tf_version=1.3.3
+
+RUN apt-get update && apt-get install -y gnupg software-properties-common curl \
+    && curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - \
+    && apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
+    && apt-get update \
+    && apt-get install terraform=${tf_version}
+
+WORKDIR $GOPATH/src/app/test/
+
+COPY tf-hello-world $GOPATH/src/app/tf-hello-world
+COPY test $GOPATH/src/app/test
+COPY run.sh /app/run.sh
+
+CMD "/app/run.sh"
