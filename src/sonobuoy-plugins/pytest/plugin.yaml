@@ -3,7 +3,7 @@ podSpec:
   serviceAccountName: sonobuoy-test-robot
 sonobuoy-config:
   driver: Job
-  plugin-name: hello-world
+  plugin-name: pytest
   result-format: junit
 spec:
   #args:

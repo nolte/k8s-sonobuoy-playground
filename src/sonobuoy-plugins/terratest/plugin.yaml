@@ -11,18 +11,20 @@ podSpec:
         - clone
         - --single-branch
         - --
-        - https://github.com/jmutai/hello-world-nginx.git
-        - /data
+        - https://github.com/nolte/k8s-sonobuoy-playground.git
+        - /tmp/repo
     volumeMounts:
-    - mountPath: /tmp/cache
+    - mountPath: /tmp/repo
       name: cache-volume
 sonobuoy-config:
   driver: Job
-  plugin-name: terra-test
+  plugin-name: terratest
   result-format: gojson
 spec:
   image: terratest-k8s-sonobuoy-playground:dirty
   name: plugin
+  args:
+  - src/test-examples/terratest
   volumeMounts:
-  - mountPath: /tmp/cache
+  - mountPath: /mnt/repo
     name: cache-volume  

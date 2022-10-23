@@ -6,15 +6,15 @@ includes:
   pytest:
     taskfile: ./.taskfiles/sonobuoy.yml
     vars:
-      SONOBUOY_DIR: "src/pytest"
+      SONOBUOY_DIR: "src/sonobuoy-plugins/pytest"
       DOCKER_IMAGE: "py-k8s-sonobuoy-playground:dirty"
-      SONOBUOY_PLUGIN_YAML: hello-world.yaml
+      #SONOBUOY_PLUGIN_YAML: hello-world.yaml
   terratest:
     taskfile: ./.taskfiles/sonobuoy.yml
     vars:
-      SONOBUOY_DIR: "src/terratest"
+      SONOBUOY_DIR: "src/sonobuoy-plugins/terratest"
       DOCKER_IMAGE: "terratest-k8s-sonobuoy-playground:dirty"      
-      SONOBUOY_PLUGIN_YAML: terra-test.yaml
+      #SONOBUOY_PLUGIN_YAML: terra-test.yaml
 
 tasks:
   default:

@@ -8,10 +8,10 @@ RUN apt-get update && apt-get install -y gnupg software-properties-common curl \
     && apt-get update \
     && apt-get install terraform=${tf_version}
 
-WORKDIR $GOPATH/src/app/test/
-
-COPY tf-hello-world $GOPATH/src/app/tf-hello-world
-COPY test $GOPATH/src/app/test
+#WORKDIR $GOPATH/src/app/test/
+#RUN echo $GOPATH
+#COPY tf-hello-world $GOPATH/src/app/tf-hello-world
+#COPY test $GOPATH/src/app/test
 COPY run.sh /app/run.sh
 
-CMD "/app/run.sh"
+ENTRYPOINT ["/app/run.sh"]

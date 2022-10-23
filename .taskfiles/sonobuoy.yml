@@ -2,6 +2,8 @@ version: '3'
 
 vars:
   SONOBUOY_REPORT_DIR: /tmp/sonobuoy-results/results
+  SONOBUOY_EXTRA_MANIFESTS_DIR: ../../sonobuoy-extra-config
+  SONOBUOY_PLUGIN_YAML: "plugin.yaml"
 
 tasks:
   build:
@@ -42,7 +44,7 @@ tasks:
     cmds: 
     - |
       sonobuoy delete --wait \
-        && kubectl apply -k ../test-infra \
+        && kubectl apply -k {{.SONOBUOY_EXTRA_MANIFESTS_DIR}} \
         && sonobuoy run \
           --skip-preflight \
           --existing-service-account \
@@ -56,3 +58,4 @@ tasks:
       - task: kind_load
       - task: run
       - task: report
+

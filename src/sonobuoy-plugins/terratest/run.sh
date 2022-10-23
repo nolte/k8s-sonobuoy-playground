@@ -6,6 +6,7 @@ set -x
 # logic of gathering/reporting results to the Sonobuoy worker.
 
 results_dir="${RESULTS_DIR:-/tmp/results}"
+# terratest_project_dir="${TERRATEST_PROJECT_DIR:-/tmp/results}"
 
 mkdir -p ${results_dir}
 
@@ -26,7 +27,10 @@ trap saveResults EXIT
 
 
 run_test() {
+  
   go test -v -json > ${results_dir}/report.json
 }
+
+cd /mnt/repo/$1
 
 run_test
